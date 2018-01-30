@@ -17,6 +17,8 @@ app.set('views', __dirname + '/views');
 
 app.use(express.static(__dirname + '/public'));
 
+//session middleware???
+
 //authorization????
 
 app.use(morgan('dev'));
