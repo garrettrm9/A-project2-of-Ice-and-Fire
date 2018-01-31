@@ -3,27 +3,6 @@ const axios = require("axios");
 
 const charactersModel = {};
 
-charactersModel.allCharacters = (req, res, next) => {
-  axios({
-    url: "https://anapioficeandfire.com/api/characters",
-    method: "get"
-  })
-    .then(respone => {
-      cont rawData = response.data;
-      const filteredData = rawData.filter(datum =>
-      });
-      res.locals.allCharactersData = filteredData;
-      next();
-    })  
-    .catch(err => {
-      console.log(
-        "error encountered in charactersModel.allCharacters axios call, error:",
-        err
-      );
-      next(err);
-    });
-};          
-
 charactersModel.findByUser = (req, res, next) => {
   console.log('in charactersModel.findByUser, req.user:', req.user);
   db
@@ -37,7 +16,7 @@ charactersModel.findByUser = (req, res, next) => {
         "error encountered in charactersModel.findByUser, error",
         err
       );
-      mext(err);  
+      next(err);  
     });
 };
 

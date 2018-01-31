@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS categories CASCADE;
 
 CREATE TABLE categories (
   id BIGSERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES users,
+  user_id INTEGER REFERENCES users(id),
   name VARCHAR(255),
   categories TEXT
 );
