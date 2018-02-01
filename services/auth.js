@@ -15,7 +15,7 @@ authObject.restrict = function restrict (req, res, next) {
     } else if (req.method === 'POST') {
         res.send('logged out');
     } else {
-        res.redirect('/users/login');
+        res.redirect('/login');
     }
 };
 

@@ -13,79 +13,68 @@ router.get('/', (req, res, next) => {
     res.redirect('/login')
 });
 
+//redirects based on succesful login
+router.post(
+    '', passport.authenticate(
+        "local-signup",
+        {
+            failureRedirect: '/login',
+            successRedirect: '/profile'
+        }
+    )
+);
 
-// // ----------------------------------------
-// // users index
+// ----------------------------------------
+// register new user
 
-// router.post(
-//     "/",
-//     // we want the behavior of the site to vary depending on whether or
-//     // not the user is already logged in. If they are logged in, we want
-//     // to send them to /users/profile. If they are not, we want to send
-//     // them to users/new.
-//     passport.authenticate(
-//         // The following string indicates the particular strategy instance
-//         // we'll want to use to handle signup. We defined behavior for
-//         // 'local-signup' back in index.js.
-//         "local-signup",
-//         {
-//             failureRedirect: "/users/new",
-//             successRedirect: "/users/profile"
-//         }
-//     )
-// );
+router.get("/profile", (req, res) => {
+    res.render("profile");
+});
 
-// // ----------------------------------------
-// // register new user
+// ----------------------------------------
+// user logout
 
-// router.get("/new", (req, res) => {
-//     res.render("users/new");
-// });
+router.get("/logout", (req, res) => {
+    // passport put this method on req for us
+    req.logout();
+    // redirect back to index page
+    res.redirect("/");
+});
 
-// // ----------------------------------------
-// // user logout
+// ----------------------------------------
+// user login
 
-// router.get("/logout", (req, res) => {
-//     // passport put this method on req for us
-//     req.logout();
-//     // redirect back to index page
-//     res.redirect("/");
-// });
+router.get("/profile", (req, res) => {
+    res.render("/profile");
+});
 
-// // ----------------------------------------
-// // user login
+// passport.authenticate will _build_ middleware for us
+// based on the 'local-login' strategy we registered with
+// passport in auth.js
+router.post(
+    "/login",
+    passport.authenticate("local-login", {
+        failureRedirect: "/login",
+        successRedirect: "/profile"
+    })
+);
 
-// router.get("/login", (req, res) => {
-//     res.render("users/login");
-// });
+// ----------------------------------------
+// user profile
 
-// // passport.authenticate will _build_ middleware for us
-// // based on the 'local-login' strategy we registered with
-// // passport in auth.js
-// router.post(
-//     "/login",
-//     passport.authenticate("local-login", {
-//         failureRedirect: "/users/login",
-//         successRedirect: "/users/profile"
-//     })
-// );
-
-// // ----------------------------------------
-// // user profile
-
-// router.get(
-//     "/profile",
-//     // Middleware (that we wrote) ensuring that if the user is not
-//     // authenticated, he or she will be redirected to the login screen.
-//     auth.restrict,
-//     User.findByEmailMiddleware,
-//     (req, res) => {
-//         console.log("in handler for users/profile");
-//         console.log("req.user:");
-//         console.log(req.user);
-//         res.render("users/profile", { user: res.locals.userData });
-//     }
-// );
+router.get(
+    "/profile",
+    // Middleware (that we wrote) ensuring that if the user is not
+    // authenticated, he or she will be redirected to the login screen.
+    auth.restrict,
+    User.findByEmailMiddleware,
+    (req, res) => {
+        console.log("in handler for users/profile");
+        console.log("req.user:");
+        console.log(req.user);
+        res.render("/profile", { user: res.locals.userData });
+    }
+);
 
 // router.post(
 //     "/counter",
@@ -97,9 +86,9 @@ router.get('/', (req, res, next) => {
 //     }
 // );
 
-// // ========================================
-// // NEW
-// // user trains!
+// ========================================
+// NEW
+// user trains!
 
 // router.get(
 //     "/trains",

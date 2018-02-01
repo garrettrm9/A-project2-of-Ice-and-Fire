@@ -3,23 +3,33 @@ const axios = require("axios");
 
 const charactersModel = {};
 
-charactersModel.findByUser = (req, res, next) => {
-  console.log('in charactersModel.findByUser, req.user:', req.user);
-  db
-    .manyOrNone("SELECT * FROM comments WHERE  user_id = $1;", [req.user.id])
-    .then(result => {
-      res.locals.userCharacterData = result;
+charactersModel.allCharacters = (req, res, next) => {
+  console.log("in charactersModel.allCharacters. req.query:", req.query);
+  axios({
+    url: "https://anapioficeandfire.com/api/characters",
+    method: "get"
+  })
+    .then(response => {
+      const rawData = response.data;
+      const filteredData = rawData.filter(datum => {
+        if (req.query.letter && /[a-zA-Z]/.test(datum.name)) {
+          return true;
+        } else if (req.query.numeric && /[0-9]+/.test(datum.name)) {
+          return true;
+        }
+        return false;
+      });
+      res.locals.allCharactersData = filteredData;
       next();
     })
     .catch(err => {
       console.log(
-        "error encountered in charactersModel.findByUser, error",
+        "error encountered in charactersModel.allCharacters axios call, error:",
         err
       );
-      next(err);  
+      next(err);
     });
 };
-
 
 
 
@@ -138,4 +148,4 @@ charactersModel.findByUser = (req, res, next) => {
 //     });
 // };
 
-// module.exports = trainsModel;
+module.exports = charactersModel;
