@@ -17,9 +17,15 @@ app.set('views', __dirname + '/views');
 
 app.use(express.static(__dirname + '/public'));
 
-//session middleware???
+app.use(session({
+    secret: 'keyboard cat',
+    resave: true,
+    saveUnitialized: true
+}));
 
-//authorization????
+const auth = require('./services/auth.js');
+app.use(auth.passportInstance);
+app.use(auth.passportSession);
 
 app.use(morgan('dev'));
 
@@ -30,11 +36,17 @@ app.use(cookieParser());
 
 app.listen(port, () => {console.log("Server started on " + port);});
 
-//router???
+const profileRouter = require('./controllers/users.js');
+app.use('/profile', profileRouter);
 
-//hook up router to app?
+// const characterRouter = require('./controllers/characters.js')
+// app.use('/character', characterRouter);
 
-//set up user controller
+//API router???
+
+app.get('/', (req, res, next) => {
+  res.redirect('/login');
+});
 
 app.use((err, req, res, next) => {
   console.log('Error encountered:', err);

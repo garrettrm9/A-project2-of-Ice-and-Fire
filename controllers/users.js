@@ -10,7 +10,7 @@ const auth = require('../services/auth');
 // users index
 
 router.get('/', (req, res, next) => {
-    res.send('here we go')
+    res.redirect('/login')
 });
 
 
