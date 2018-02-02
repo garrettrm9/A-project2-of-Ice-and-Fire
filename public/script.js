@@ -3,8 +3,6 @@ $(document).ready(() => {
 
   const $characterSearch = $('#characterSearch');
 
-//   if ($trainSearchForm.length) {
-
     $characterSearch.submit(e => {
       e.preventDefault();
       const $searchInput = $('#searchInput');
@@ -16,7 +14,11 @@ $(document).ready(() => {
         data: $characterSearch.serialize(),
         dataType: "json",
         success: function(data) {
-          console.log(data)
+          console.log(data);
+          const $container = $('#characterContainer');
+          $container.children().remove();
+          const $character = ($('<a>', {class: 'character-name', text: data[0].name, href: `/character/${data[0].name}`}));
+          $container.append($character);
         }
       })
     })
