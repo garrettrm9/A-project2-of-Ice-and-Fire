@@ -36,13 +36,14 @@ app.use(cookieParser());
 
 app.listen(port, () => {console.log("Server started on " + port);});
 
-const profileRouter = require('./controllers/users.js');
-app.use('/profile', profileRouter);
+const userRouter = require('./controllers/users.js');
+app.use('/profile', userRouter);
 
-// const characterRouter = require('./controllers/characters.js')
-// app.use('/character', characterRouter);
+const characterRouter = require('./controllers/characters.js')
+app.use('/character', characterRouter);
 
-//API router???
+const charactersAPIRouter = require('./controllers/api/characters.js');
+app.use('/api/characters', charactersAPIRouter);
 
 app.get('/', (req, res, next) => {
   res.redirect('/login');

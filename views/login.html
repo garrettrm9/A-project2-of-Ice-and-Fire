@@ -4,6 +4,15 @@
   <title>Login!!</title>
 </head>
 <body>
-  <h1>Login!!</h1>
+      <form action="/login" method="POST">
+        <label for="email">Email</label><br>
+        <input id="email" type="text" name="user[email]" placeholder="email@example.com"><br>
+        <label for="password">Password</label><br>
+        <input id="password" type="password" name="user[password]" placeholder="Pass#Word"><br>
+        <input type="submit" value="Login">
+      <div>
+        <a href="/profile">Sign Up</a>
+      </div>        
+      </form>
 </body>
 </html>

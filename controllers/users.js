@@ -69,15 +69,15 @@ router.get(
     }
 );
 
-router.post(
-    "/counter",
-    auth.restrict,
-    User.incrementUserCounter,
-    (req, res) => {
-        console.log("in post at /counter, req.user: ", req.user);
-        res.json(res.locals.counterData);
-    }
-);
+// router.post(
+//     "/counter",
+//     auth.restrict,
+//     User.incrementUserCounter,
+//     (req, res) => {
+//         console.log("in post at /counter, req.user: ", req.user);
+//         res.json(res.locals.counterData);
+//     }
+// );
 
 // ========================================
 // NEW
