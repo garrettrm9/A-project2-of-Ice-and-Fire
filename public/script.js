@@ -7,18 +7,20 @@ $(document).ready(() => {
 
     $characterSearch.submit(e => {
       e.preventDefault();
+      const $searchInput = $('#searchInput');
+      const str = jQuery.param($searchInput);
+      console.log(str);
       $.ajax({
-        method:'get',
+        url: "https://anapioficeandfire.com/api/characters?name" + str,
+        method:'GET',
         data: $characterSearch.serialize(),
         dataType: "json",
-        url: "https://anapioficeandfire.com/api/characters",
         success: function(data) {
           console.log(data)
         }
       })
     })
-});
-
+  });
 
 
 // If we were using a search field, we would
