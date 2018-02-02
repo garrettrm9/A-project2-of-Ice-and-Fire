@@ -80,29 +80,29 @@ charactersModel.findByName = (req, res, next) => {
 
 
 
-// used in the '/users/trains/:trainName/edit' GET method in controllers/users.js
-charactersModel.findByUserAndName = (req, res, next) => {
-  const characterName = req.params.characterName;
-  const userId = req.user.id;
-  db
-    .one("SELECT * FROM comments WHERE user_id = $1 AND character_name = $2", [
-      userId,
-      characterName
-    ])
-    .then(result => {
-      res.locals.characterData = result;
-      next();
-    })
-    .catch(err => {
-      console.log(
-        "Error encountered in charactersModel.findByUserAndName, error:",
-        err
-      );
-      next(err);
-    });
-};
+// // used in the '/users/trains/:trainName/edit' GET method in controllers/users.js
+// charactersModel.findByUserAndName = (req, res, next) => {
+//   const characterName = req.params.characterName;
+//   const userId = req.user.id;
+//   db
+//     .one("SELECT * FROM comments WHERE user_id = $1 AND character_name = $2", [
+//       userId,
+//       characterName
+//     ])
+//     .then(result => {
+//       res.locals.characterData = result;
+//       next();
+//     })
+//     .catch(err => {
+//       console.log(
+//         "Error encountered in charactersModel.findByUserAndName, error:",
+//         err
+//       );
+//       next(err);
+//     });
+// };
 
-// this is used in the 'users/trains' POST route in controllers/users.js
+// // this is used in the 'users/trains' POST route in controllers/users.js
 charactersModel.addUserCharacter = (req, res, next) => {
   console.log("----------------------");
   console.log("in charactersModel.addUserCharacter. req.body:", req.body);
@@ -127,31 +127,31 @@ charactersModel.addUserCharacter = (req, res, next) => {
     });
 };
 
-// this gets used in the '/users/trains/:trainName' PUT method in controllers/users.js
-charactersModel.updateCharacter = (req, res, next) => {
-  console.log("------------------------");
-  console.log("in charactersModel.updateCharacter. req.body:", req.body);
-  const userId = req.user.id;
-  // we get the trainName from a different place than addUserTrain in this method
-  const characterName = req.params.characterName;
-  const comment = req.body.comment;
-  db
-    .one(
-      "UPDATE comments SET comment = $1 WHERE user_id = $2 AND character_name = $3 RETURNING id;",
-      [comment, userId, characterName]
-    )
-    .then(data => {
-      res.locals.editedCharacterId = data.id;
-      next();
-    })
-    .catch(err => {
-      console.log(
-        "Error encountered in charactersModel.updateCharacter. error:",
-        err
-      );
-      next(err);
-    });
-};
+// // this gets used in the '/users/trains/:trainName' PUT method in controllers/users.js
+// charactersModel.updateCharacter = (req, res, next) => {
+//   console.log("------------------------");
+//   console.log("in charactersModel.updateCharacter. req.body:", req.body);
+//   const userId = req.user.id;
+//   // we get the trainName from a different place than addUserTrain in this method
+//   const characterName = req.params.characterName;
+//   const comment = req.body.comment;
+//   db
+//     .one(
+//       "UPDATE comments SET comment = $1 WHERE user_id = $2 AND character_name = $3 RETURNING id;",
+//       [comment, userId, characterName]
+//     )
+//     .then(data => {
+//       res.locals.editedCharacterId = data.id;
+//       next();
+//     })
+//     .catch(err => {
+//       console.log(
+//         "Error encountered in charactersModel.updateCharacter. error:",
+//         err
+//       );
+//       next(err);
+//     });
+// };
 
 charactersModel.destroy = (req, res, next) => {
   console.log("--------------------------");

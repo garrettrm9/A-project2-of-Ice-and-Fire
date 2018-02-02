@@ -2,20 +2,18 @@ const User = require('../models/user');
 const router = require('express').Router();
 const passport = require('passport');
 
-const characterModel = require('../models/characters')
+const charactersModel = require('../models/characters')
 
 const auth = require('../services/auth');
 
-// ----------------------------------------
 // users index
 
 router.get('/', (req, res, next) => {
     res.redirect('/login')
 });
 
-//redirects based on succesful login
 router.post(
-    '', passport.authenticate(
+    '/', passport.authenticate(
         "local-signup",
         {
             failureRedirect: '/login',
@@ -24,15 +22,13 @@ router.post(
     )
 );
 
-// ----------------------------------------
-// register new user
+// new user
 
 router.get("/profile", (req, res) => {
     res.render("profile");
 });
 
-// ----------------------------------------
-// user logout
+// logout
 
 router.get("/logout", (req, res) => {
     // passport put this method on req for us
@@ -41,16 +37,14 @@ router.get("/logout", (req, res) => {
     res.redirect("/");
 });
 
-// ----------------------------------------
 // user login
 
 router.get("/profile", (req, res) => {
     res.render("/profile");
 });
 
-// passport.authenticate will _build_ middleware for us
-// based on the 'local-login' strategy we registered with
-// passport in auth.js
+//middleware 
+
 router.post(
     "/login",
     passport.authenticate("local-login", {
@@ -59,7 +53,6 @@ router.post(
     })
 );
 
-// ----------------------------------------
 // user profile
 
 router.get(
@@ -69,22 +62,22 @@ router.get(
     auth.restrict,
     User.findByEmailMiddleware,
     (req, res) => {
-        console.log("in handler for users/profile");
+        console.log("in handler for /profile");
         console.log("req.user:");
         console.log(req.user);
         res.render("/profile", { user: res.locals.userData });
     }
 );
 
-// router.post(
-//     "/counter",
-//     auth.restrict,
-//     User.incrementUserCounter,
-//     (req, res) => {
-//         console.log("in post at /counter, req.user: ", req.user);
-//         res.json(res.locals.counterData);
-//     }
-// );
+router.post(
+    "/counter",
+    auth.restrict,
+    User.incrementUserCounter,
+    (req, res) => {
+        console.log("in post at /counter, req.user: ", req.user);
+        res.json(res.locals.counterData);
+    }
+);
 
 // ========================================
 // NEW
@@ -100,15 +93,15 @@ router.get(
 //     }
 // );
 
-// router.post(
-//     "/trains",
-//     auth.restrict,
-//     trainsModel.addUserTrain,
-//     (req, res, next) => {
-//         console.log("in post at /users/trains. res.locals:", res.locals);
-//         res.json({ trainCommentId: res.locals.trainCommentId });
-//     }
-// );
+router.post(
+    "/profile",
+    auth.restrict,
+    charactersModel.addUserCharacter,
+    (req, res, next) => {
+        console.log("in post at /profile. res.locals:", res.locals);
+        res.json({ characterCommentId: res.locals.characterCommentId });
+    }
+);
 
 // router.get(
 //     "/trains/:trainName/edit",
@@ -121,8 +114,8 @@ router.get(
 //     }
 // );
 
-// // this route gets hit from the form at /users/trains/:trainName/edit
-// // (the route just above this one)
+// this route gets hit from the form at /users/trains/:trainName/edit
+// (the route just above this one)
 // router.put(
 //     "/trains/:trainName",
 //     auth.restrict,
@@ -132,16 +125,15 @@ router.get(
 //     }
 // );
 
-// // triggered from the Delete button at the /users/trains URL
-// // (see views/users/trains.html and script.js)
-// router.delete(
-//     "/trains/:trainName",
-//     auth.restrict,
-//     trainsModel.destroy,
-//     (req, res, next) => {
-//         // not a lot to send back
-//         res.json({});
-//     }
-// );
+// triggered from the Delete button at the /users/trains URL
+// (see views/users/trains.html and script.js)
+router.delete(
+    "/characters/:characterName",
+    auth.restrict,
+    charactersModel.destroy,
+    (req, res, next) => {
+        res.json({});
+    }
+);
 
 module.exports = router;
